@@ -19,11 +19,21 @@ export class PeripheralsTreeTableWebView extends CDTTreeWebviewViewProvider<Peri
         protected context: vscode.ExtensionContext,
     ) {
         super(dataProvider, context);
+        this.resolveWebviewView = this.resolveWebviewView.bind(this);
     }
 
     async activate(context: vscode.ExtensionContext): Promise<void> {
         context.subscriptions.push(
             vscode.window.registerWebviewViewProvider(PeripheralsTreeTableWebView.viewType, this)
         );
+    }
+
+    async resolveWebviewView(
+        webviewView: vscode.WebviewView,
+        _context: vscode.WebviewViewResolveContext<unknown>,
+        _token: vscode.CancellationToken
+    ): Promise<void> {
+        await super.resolveWebviewView(webviewView, _context, _token);
+        webviewView.title = 'Peripheral Tree Table';
     }
 }
